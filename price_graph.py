@@ -576,9 +576,9 @@ class PriceChartHandler(BaseHTTPRequestHandler):
 
 def main():
     """Start the web server."""
-    server_address = ('localhost', 8000)
+    server_address = ('', 8282)
     server = HTTPServer(server_address, PriceChartHandler)
-    print("Server running at http://localhost:8000")
+    print("Server running at http://localhost:8282")
     print("Refresh the page to generate new random price data.")
     print("Press Ctrl+C to stop the server.")
     server.serve_forever()
