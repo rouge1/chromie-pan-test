@@ -22,7 +22,7 @@ cd chromie
 python3 price_graph.py
 ```
 
-The server runs on `http://localhost:8000`. Visit `/login`, enter the password (`password`), then the chart is served at `/`. Each refresh generates new random price data.
+The server runs on `http://localhost:8282` (binds to all interfaces). Visit `/login`, enter the password (`password`), then the chart is served at `/`. Each refresh generates new random price data.
 
 ## Architecture
 
@@ -69,18 +69,15 @@ prices = generate_price_data(
 )
 ```
 
-## Deploying to LAN / Raspberry Pi
+## Deploying to LAN / Raspberry Pi / Tailscale
 
-The server binds to `localhost` only (line 579). To allow connections from other devices on the network, change:
-```python
-server_address = ('', 8000)   # was ('localhost', 8000)
-```
+The server binds to `''` (all interfaces) on port `8282` — LAN and Tailscale access is enabled by default. Access via `http://<host-ip>:8282` from any device on the same network or Tailnet.
 
-Then access via `http://<host-ip>:8000` from any device on the LAN.
+For Tailscale: install Tailscale directly on the Pi (`curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up`). The Pi gets a Tailscale IP (e.g. `100.x.x.x`) and the app is reachable at `http://100.x.x.x:8282`.
 
 ## Common Pitfalls
 
 - **Sessions reset on restart**: `active_sessions` is in-memory. Users must re-login after restarting the server.
 - **Wrong line number references**: Line numbers shift as code grows. Prefer searching by function name rather than relying on hardcoded line references in documentation.
-- **localhost binding blocks LAN access**: Default bind is `localhost`; must change to `''` or `0.0.0.0` for Raspberry Pi / multi-device access.
 - **Chart.js requires internet**: The CDN script tag requires outbound internet access. For fully offline deployments, host Chart.js locally.
+- **Port 8282 in use**: If the port is taken, search `server_address` in `price_graph.py` and change the port number there.

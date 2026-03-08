@@ -37,22 +37,22 @@ Start the web server:
 python3 price_graph.py
 ```
 
-The server will start on `http://localhost:8000`
+The server will start on `http://localhost:8282`
 
 ```
-Server running at http://localhost:8000
+Server running at http://localhost:8282
 Refresh the page to generate new random price data.
 Press Ctrl+C to stop the server.
 ```
 
 ## Usage
 
-1. **Access the application**: Open your browser and navigate to `http://localhost:8000`
+1. **Access the application**: Open your browser and navigate to `http://localhost:8282`
 2. **Login**: You'll be redirected to the login page
    - **Password**: `password`
 3. **View the chart**: After successful login, you'll see the interactive stock price chart
 4. **Generate new data**: Refresh the page to generate new random price data
-5. **Logout**: Navigate to `http://localhost:8000/logout` to end your session
+5. **Logout**: Navigate to `http://localhost:8282/logout` to end your session
 
 ## Authentication
 
@@ -113,6 +113,17 @@ chromie/
 - `POST /login` - Login form submission
 - `GET /logout` - Logout and clear session
 
+## LAN / Tailscale Access
+
+The server binds to all interfaces on port `8282`, so it's reachable from other devices by default.
+
+**Tailscale (recommended for remote access)**:
+1. Install Tailscale on the Raspberry Pi: `curl -fsSL https://tailscale.com/install.sh | sh`
+2. Authenticate: `sudo tailscale up`
+3. Access from any device in your Tailnet: `http://<tailscale-ip>:8282`
+
+No subnet routing needed — just install Tailscale on the Pi itself.
+
 ## Security Notes
 
 This application is designed for **local development and testing only**:
@@ -158,8 +169,8 @@ Modify the `volatility` parameter for different price movement characteristics:
 
 **Port already in use**:
 ```bash
-# Find process using port 8000
-lsof -i :8000
+# Find process using port 8282
+lsof -i :8282
 # Kill the process
 kill -9 <PID>
 ```
